@@ -1,2 +1,23 @@
 [
+  {
+    "email": "john@smith.com",
+    "firstName": "John",
+    "subscriptions": [
+      "A genuine newsletter",
+      "An exceedingly interesting newsletter",
+      "A newsletter about stuff and things"
+    ]
+  },
+  {
+    "email": "jane@smith.com",
+    "firstName": null,
+    "subscriptions": [
+      "A genuine newsletter"
+    ]
+  },
+  {
+    "email": "bob@smith.com",
+    "firstName": "Bob",
+    "subscriptions": []
+  }
 ]

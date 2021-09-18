@@ -12,9 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class NewsletterController extends AbstractController
 {
     /**
-     * @Route("/", name="subscribe")
+     * @Route("/", name="list")
      */
-    public function subscribe(): Response
+    public function list(): Response
     {
         return $this->render('newsletter/index.html.twig', []);
     }
