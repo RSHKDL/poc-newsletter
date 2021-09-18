@@ -1,0 +1,10 @@
+Hello {% if user.firstName is not null %}{{ user.firstName }}{% endif %}!
+
+You receive this email because you subscribed to the newsletter {{ newsletter.title }}
+This is not a spam.
+
+{{ newsletter.content }}
+
+If you're not happy with this newsletter, you can:
+- Unsubscribe here: {{ url("unsubscribe", {userUuid: user.uuid, newsletterUuid: newsletter.uuid}) }}
+- Modify your subscriptions: {{ url("subscribe") }}

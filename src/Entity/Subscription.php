@@ -25,6 +25,11 @@ class Subscription
      */
     private Collection $newsletters;
 
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="subscription", cascade={"persist"})
+     */
+    private User $user;
+
     public function __construct()
     {
         $this->newsletters = new ArrayCollection();
@@ -55,6 +60,28 @@ class Subscription
     public function removeNewsletter(Newsletter $newsletter): self
     {
         $this->newsletters->removeElement($newsletter);
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setSubscription(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getSubscription() !== $this) {
+            $user->setSubscription($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

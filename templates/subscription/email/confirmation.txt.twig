@@ -1,0 +1,5 @@
+Hello dear {% if user.firstName is not null %}{{ user.firstName }}{% else %}anonymous subscriber{% endif %}!
+
+You successfully subscribed to {{ count }} newsletters with this email: {{ email.to[0].address }}
+
+See you soon!

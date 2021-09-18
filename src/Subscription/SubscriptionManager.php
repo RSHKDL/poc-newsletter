@@ -2,36 +2,40 @@
 
 namespace App\Subscription;
 
-use App\Dto\Subscription as NewSubscription;;
+use App\Subscription\Dto\Subscription as SubscriptionDto;
 use App\Entity\Subscription;
 use App\Entity\User;
 use App\Repository\NewsletterRepository;
 use App\Repository\UserRepository;
+use App\Subscription\Mailer\SubscriptionMailer;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\ORMException;
-use Symfony\Component\Uid\Uuid;
 
 class SubscriptionManager
 {
     private UserRepository $userRepository;
     private NewsletterRepository $newsletterRepository;
+    private SubscriptionMailer $subscriptionMailer;
 
     public function __construct(
         UserRepository $userRepository,
-        NewsletterRepository $newsletterRepository
+        NewsletterRepository $newsletterRepository,
+        SubscriptionMailer $subscriptionMailer
     ) {
         $this->userRepository = $userRepository;
         $this->newsletterRepository = $newsletterRepository;
+        $this->subscriptionMailer = $subscriptionMailer;
     }
 
-    public function manageSubscription(NewSubscription $newSubscription): void
+    public function manageSubscription(SubscriptionDto $newSubscription): void
     {
         try {
             $user = $this->userRepository->findOneBy(["email" => $newSubscription->email]);
             if (null === $user) {
                 $user = $this->createUserFromSubscription($newSubscription);
             }
-            $this->updateSubscription($user, $newSubscription->newsletters);
+            $newsletters = $this->updateSubscription($user, $newSubscription->newsletters);
+            $this->subscriptionMailer->sendSubscriptionConfirmationEmail($user, $newsletters);
         } catch (\Throwable $throwable) {
             dd($throwable);
             // maybe log errors here
@@ -59,7 +63,7 @@ class SubscriptionManager
     /**
      * @throws ORMException
      */
-    private function createUserFromSubscription(NewSubscription $subscription): User
+    private function createUserFromSubscription(SubscriptionDto $subscription): User
     {
         $user = new User();
         $user->setEmail($subscription->email);
@@ -77,7 +81,7 @@ class SubscriptionManager
      *
      * @throws ORMException
      */
-    private function updateSubscription(User $user, Collection $newsletters): void
+    private function updateSubscription(User $user, Collection $newsletters): Collection
     {
         if ($user->hasSubscription()) {
             $userSubscription = $user->getSubscription();
@@ -91,5 +95,7 @@ class SubscriptionManager
 
         $user->setSubscription($userSubscription);
         $this->userRepository->save($user, true);
+
+        return $newsletters;
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Dto;
+namespace App\Subscription\Dto;
 
 use Doctrine\Common\Collections\Collection;
 
 class Subscription
 {
     public string $email;
-    public string $firstName;
+    public ?string $firstName = null;
     public Collection $newsletters;
 }

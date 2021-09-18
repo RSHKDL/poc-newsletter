@@ -1,0 +1,12 @@
+<h1>Hello {% if user.firstName is not null %}{{ user.firstName }}{% endif %}!</h1>
+
+<p>You receive this email because you subscribed to the newsletter {{ newsletter.title }}</p>
+<p>This is not a spam 😉️</p>
+
+{{ newsletter.content }}
+
+<p>If you're not happy with this newsletter, you can
+    <a href="{{ url("unsubscribe", {userUuid: user.uuid, newsletterUuid: newsletter.uuid}) }}">unsubscribe</a>
+    or
+    <a href="{{ url("subscribe") }}">modify your subscriptions</a>
+</p>

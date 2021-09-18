@@ -31,10 +31,10 @@ class User
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $firstName;
+    private ?string $firstName = null;
 
     /**
-     * @ORM\OneToOne(targetEntity=Subscription::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Subscription::class, inversedBy="user", cascade={"persist", "remove"})
      */
     private ?Subscription $subscription = null;
 

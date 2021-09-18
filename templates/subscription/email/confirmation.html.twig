@@ -1,0 +1,5 @@
+<h1>Hello dear {% if user.firstName is not null %}{{ user.firstName }}!{% else %}anonymous subscriber 😉️{% endif %}</h1>
+
+<p>You successfully subscribed to {{ count }} newsletters with this email:</p>
+<p><code>{{ email.to[0].address }}</code></p>
+<p>See you soon!</p>
