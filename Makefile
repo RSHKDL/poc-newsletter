@@ -28,6 +28,20 @@ project-destroy: ## Completely remove the project (containers, images, volumes)
 
 ##
 ## ----------------------------------------------------------------------------
+##   Project management
+## ----------------------------------------------------------------------------
+##
+
+composer-install: ## Install the project's dependencies
+	$(COMPOSE) exec php /bin/sh -c "cd ${PROJECT_PATH} && php -d memory-limit=-1 /usr/bin/composer install"
+
+init-database: ## Create the database
+	$(COMPOSE) exec php bin/console doctrine:database:create
+
+.PHONY: composer-install init-database
+
+##
+## ----------------------------------------------------------------------------
 ##   Shell access
 ## ----------------------------------------------------------------------------
 ##
